@@ -1,14 +1,18 @@
-FROM ubuntu:16.04
+FROM ubuntu:20.04
 
 # System maintenance
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y software-properties-common && \
+    apt-add-repository universe
+
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+    software-properties-common \
     python3-tk \
     graphviz \
     libxext6 \
     libxrender-dev \
-    libsm6 && \
-    rm -rf /var/lib/apt/lists/* && \
-    /usr/bin/python3 -m pip install --upgrade pip
+    libsm6 \ 
+    python3-pip && \
+    rm -rf /var/lib/apt/lists/*
     
 WORKDIR /notebooks
 
@@ -16,7 +20,7 @@ WORKDIR /notebooks
 COPY README.md requirements.txt /opt/dataviz/
 
 # Prevent reinstallation of tensorflow and install all other requirements.
-RUN pip install -r /opt/dataviz/requirements.txt
+RUN pip3 install -r /opt/dataviz/requirements.txt
 
 # Copy over deepcell notebooks
 COPY notebooks/ /notebooks/
