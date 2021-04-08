@@ -1,4 +1,4 @@
-FROM ubuntu/ubuntu:16.04
+FROM ubuntu:16.04
 
 # System maintenance
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
