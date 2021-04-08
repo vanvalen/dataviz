@@ -1,9 +1,4 @@
-# Use tensorflow/tensorflow as the base image
-# Change the build arg to edit the tensorflow version.
-# Only supporting python3.
-ARG TF_VERSION=2.4.1-gpu
-
-FROM tensorflow/tensorflow:${TF_VERSION}
+FROM ubuntu/ubuntu:16.04
 
 # System maintenance
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
@@ -21,10 +16,8 @@ WORKDIR /notebooks
 COPY README.md requirements.txt /opt/dataviz/
 
 # Prevent reinstallation of tensorflow and install all other requirements.
-RUN sed -i "/tensorflow>/d" /opt/dataviz/requirements.txt && \
-    pip install -r /opt/dataviz/requirements.txt
+RUN pip install -r /opt/dataviz/requirements.txt
 
 # Copy over deepcell notebooks
 COPY notebooks/ /notebooks/
 
-CMD ["jupyter", "notebook", "--ip=0.0.0.0", "--allow-root"]
